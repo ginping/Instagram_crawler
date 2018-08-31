@@ -1,9 +1,11 @@
 import os
 import re
+import sys
 import json
 import time
 import random
 import requests
+from hashlib import md5
 from pyquery import PyQuery as pq
 
 url_base = 'https://www.instagram.com/'
@@ -11,7 +13,8 @@ uri = 'https://www.instagram.com/graphql/query/?query_hash=a5164aed103f24b03e7b7
 
 
 headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+    'cookie': '这里加上自己的cookie'
 }
 
 
@@ -97,10 +100,10 @@ def main(user):
     url = url_base + user + '/'
     html = get_html(url)
     urls = get_urls(html)
-    os.mkdir(r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user))
+    os.mkdir(r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user))  # 自动创建以博主账号名称为名的文件夹
     for i in range(len(urls)):
         content = get_content(urls[i])
-        file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, i, urls[i][-3:])
+        file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-3:])
         if not os.path.exists(file_path):
             with open(file_path, 'wb') as f:
                 print('正在下载第{i}张：'.format(i=i) + urls[i], '还剩{0}张'.format(len(urls)-i-1))
@@ -109,4 +112,5 @@ def main(user):
 
 
 if __name__ == '__main__':
-    main('user_name')
+    user_name = sys.argv[1]
+    main(user_name)
