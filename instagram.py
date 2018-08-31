@@ -97,6 +97,7 @@ def main(user):
     url = url_base + user + '/'
     html = get_html(url)
     urls = get_urls(html)
+    os.mkdir(r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user))
     for i in range(len(urls)):
         content = get_content(urls[i])
         file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, i, urls[i][-3:])
