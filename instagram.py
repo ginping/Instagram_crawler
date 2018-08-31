@@ -100,15 +100,19 @@ def main(user):
     url = url_base + user + '/'
     html = get_html(url)
     urls = get_urls(html)
-    os.mkdir(r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user))  # 自动创建以博主账号名称为名的文件夹
+    dirpath = r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user)
+    if not os.path.exists(dirpath):
+        os.mkdir(r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user))
     for i in range(len(urls)):
         content = get_content(urls[i])
         file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-3:])
         if not os.path.exists(file_path):
             with open(file_path, 'wb') as f:
-                print('正在下载第{i}张：'.format(i=i) + urls[i], '还剩{0}张'.format(len(urls)-i-1))
+                print('正在下载第{0}张： '.format(i) + urls[i], ' 还剩{0}张'.format(len(urls)-i-1))
                 f.write(content)
                 f.close()
+        else:
+            print('第{0}张照片已下载'.format(i))
 
 
 if __name__ == '__main__':
