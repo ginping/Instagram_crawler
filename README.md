@@ -1,5 +1,5 @@
 # Instagram_crawler
-Python爬虫爬取 Instagram 博主照片视频
+Python爬虫 爬取 Instagram 一个博主所有图片视频
 
 用法：
 在代码中加上自己的cookie,
