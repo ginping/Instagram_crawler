@@ -32,7 +32,7 @@ def get_html(url):
 
 def get_json(url):
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=10)
         if response.status_code == 200:
             return response.json()
         else:
@@ -45,7 +45,7 @@ def get_json(url):
 
 def get_content(url):
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=10)
         if response.status_code == 200:
             return response.content
         else:
@@ -102,19 +102,31 @@ def main(user):
     urls = get_urls(html)
     dirpath = r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user)
     if not os.path.exists(dirpath):
-        os.mkdir(r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user))
+        os.mkdir(dirpath)
     for i in range(len(urls)):
-        content = get_content(urls[i])
-        file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-3:])
-        if not os.path.exists(file_path):
-            with open(file_path, 'wb') as f:
-                print('正在下载第{0}张： '.format(i) + urls[i], ' 还剩{0}张'.format(len(urls)-i-1))
-                f.write(content)
-                f.close()
-        else:
-            print('第{0}张照片已下载'.format(i))
+        try:
+            content = get_content(urls[i])
+            file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-3:])
+            if not os.path.exists(file_path):
+                with open(file_path, 'wb') as f:
+                    print('正在下载第{0}张： '.format(i) + urls[i], ' 还剩{0}张'.format(len(urls)-i-1))
+                    f.write(content)
+                    f.close()
+            else:
+                print('第{0}张照片已下载'.format(i))
+        except Exception as e:
+            print(e)
+            print('这张图片or视频下载失败')
 
 
 if __name__ == '__main__':
     user_name = sys.argv[1]
+    start = time.time()
     main(user_name)
+    print('Complete!!!!!!!!!!')
+    end = time.time()
+    spend = end - start
+    hour = spend // 3600
+    minu = (spend - 3600 * hour) // 60
+    sec = spend - 3600 * hour - 60 * minu
+    print(f'一共花费了{hour}小时{minu}分钟{sec}秒')
