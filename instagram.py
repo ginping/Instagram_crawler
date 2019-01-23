@@ -104,12 +104,13 @@ def main(user):
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
     for i in range(len(urls)):
+        print('\n正在下载第{0}张： '.format(i) + urls[i], ' 还剩{0}张'.format(len(urls)-i-1))
         try:
             content = get_content(urls[i])
-            file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-3:])
+            file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-43:-40])
             if not os.path.exists(file_path):
                 with open(file_path, 'wb') as f:
-                    print('正在下载第{0}张： '.format(i) + urls[i], ' 还剩{0}张'.format(len(urls)-i-1))
+                    print('第{0}张下载完成： '.format(i) + urls[i])
                     f.write(content)
                     f.close()
             else:

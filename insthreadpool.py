@@ -113,11 +113,11 @@ def main(user):
             pool.close()
             pool.join()
             for i, content in enumerate(contents):
-                file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-3:])
+                file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), urls[i][-43:-40])
                 if not os.path.exists(file_path):
                     with open(file_path, 'wb') as f:
                         # print('正在下载第{0}张： '.format(i) + urls[i], ' 还剩{0}张'.format(len(urls)-i-1))
-                        print('正在下载：', urls[i])
+                        print('下载完成：', urls[i])
                         f.write(content)
                         f.close()
                 else:
