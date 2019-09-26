@@ -100,15 +100,15 @@ def main(user):
     url = url_base + user + '/'
     html = get_html(url)
     urls = get_urls(html)
-    dirpath = r'C:\Users\Ph\Pictures\Instagram\{0}'.format(user)
+    dirpath = r'.\{0}'.format(user)
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
     for i in range(len(urls)):
         print('\n正在下载第{0}张： '.format(i) + urls[i], ' 还剩{0}张'.format(len(urls)-i-1))
         try:
             content = get_content(urls[i])
-            endw = 'mp4' if r'mp4?_nc_ht=scontent.cdninstagram.com' in urls[i] else 'jpg'
-            file_path = r'C:\Users\Ph\Pictures\Instagram\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), endw)
+            endw = 'mp4' if r'mp4?_nc_ht=scontent' in urls[i] else 'jpg'
+            file_path = r'.\{0}\{1}.{2}'.format(user, md5(content).hexdigest(), endw)
             if not os.path.exists(file_path):
                 with open(file_path, 'wb') as f:
                     print('第{0}张下载完成： '.format(i) + urls[i])
